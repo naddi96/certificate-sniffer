@@ -1,0 +1,212 @@
+Capturing on 'Ethernet'
+2 CN   ——   *.vortex.data.microsoft.com
+inserimento %.vortex.data.microsoft.com
+3 CN   ——   *.vortex.data.microsoft.com
+fai update %.vortex.data.microsoft.com 2
+6 CN   ——   *.vortex.data.microsoft.com
+fai update %.vortex.data.microsoft.com 3
+CN   ——   www.bing.com
+inserimento www.bing.com
+CN   ——   www.bing.com
+fai update www.bing.com 2
+8 CN   ——   www.bing.com
+fai update www.bing.com 3
+CN   ——   smartscreen.microsoft.com
+inserimento smartscreen.microsoft.com
+10 CN   ——   *.msedge.net
+inserimento %.msedge.net
+CN   ——   *.telemetry.mozilla.org
+inserimento %.telemetry.mozilla.org
+12 CN   ——   *.telemetry.mozilla.org
+fai update %.telemetry.mozilla.org 2
+CN   ——   *.msedge.net
+fai update %.msedge.net 2
+CN   ——   push.services.mozilla.com
+inserimento push.services.mozilla.com
+15 CN   ——   *.azureedge.us
+inserimento %.azureedge.us
+CN   ——   *.cryptocompare.com
+inserimento %.cryptocompare.com
+18 CN   ——   *.azureedge.net
+inserimento %.azureedge.net
+CN   ——   *.infura.io
+inserimento %.infura.io
+CN   ——   *.infura.io
+fai update %.infura.io 2
+19 CN   ——   *.infura.io
+fai update %.infura.io 3
+20 CN   ——   *.services.mozilla.com
+inserimento %.services.mozilla.com
+21 CN   ——   *.cryptocompare.com
+fai update %.cryptocompare.com 2
+22 CN   ——   *.vortex.data.microsoft.com
+fai update %.vortex.data.microsoft.com 4
+23 CN   ——   in.applicationinsights.azure.com
+inserimento in.applicationinsights.azure.com
+24 CN   ——   *.vortex.data.microsoft.com
+fai update %.vortex.data.microsoft.com 5
+25 CN   ——   *.vortex.data.microsoft.com
+fai update %.vortex.data.microsoft.com 6
+26 CN   ——   *.vortex.data.microsoft.com
+fai update %.vortex.data.microsoft.com 7
+27 CN   ——   *.vortex.data.microsoft.com
+fai update %.vortex.data.microsoft.com 8
+28 CN   ——   www.bing.com
+fai update www.bing.com 4
+29 CN   ——   *.events.data.microsoft.com
+inserimento %.events.data.microsoft.com
+<built-in method with_traceback of IntegrityError object at 0x0000022EF45E91C0>
+UNIQUE constraint failed: nomi_domino.nome
+30 CN   ——   *.githubapp.com
+inserimento %.githubapp.com
+31 CN   ——   *.vortex.data.microsoft.com
+fai update %.vortex.data.microsoft.com 9
+32 CN   ——   *.cryptocompare.com
+fai update %.cryptocompare.com 3
+33 CN   ——   *.cryptocompare.com
+fai update %.cryptocompare.com 4
+34 CN   ——   *.vortex.data.microsoft.com
+fai update %.vortex.data.microsoft.com 10
+35 CN   ——   *.vortex.data.microsoft.com
+fai update %.vortex.data.microsoft.com 11
+36 CN   ——   *.vortex.data.microsoft.com
+fai update %.vortex.data.microsoft.com 12
+37 CN   ——   *.vortex.data.microsoft.com
+fai update %.vortex.data.microsoft.com 13
+38 CN   ——   *.cryptocompare.com
+fai update %.cryptocompare.com 5
+39 CN   ——   *.cryptocompare.com
+fai update %.cryptocompare.com 6
+40 CN   ——   *.vortex.data.microsoft.com
+fai update %.vortex.data.microsoft.com 14
+41 CN   ——   *.vortex.data.microsoft.com
+fai update %.vortex.data.microsoft.com 15
+42 CN   ——   *.vortex.data.microsoft.com
+fai update %.vortex.data.microsoft.com 16
+42 CN   ——   *.telemetry.mozilla.org
+44 fai update %.telemetry.mozilla.org 3
+CN   ——   *.adpushup.com
+inserimento %.adpushup.com
+45 CN   ——   *.buysellads.net
+inserimento %.buysellads.net
+CN   ——   *.geeksforgeeks.org
+inserimento %.geeksforgeeks.org
+CN   ——   *.adpushup.com
+ATTACCOOOOOOOOOOOOOOOOOOOO
+55 CN   ——   *.adpushup.com
+ATTACCOOOOOOOOOOOOOOOOOOOO
+CN   ——   *.adpushup.com  
+ATTACCOOOOOOOOOOOOOOOOOOOO
+CN   ——   san.casalemedia.com
+inserimento san.casalemedia.com
+CN   ——   *.adnxs.com
+inserimento %.adnxs.com
+CN   ——   *.adnxs.com
+fai update %.adnxs.com 2
+CN   ——   *.adnxs.com
+fai update %.adnxs.com 3
+CN   ——   *.pubmatic.com
+inserimento %.pubmatic.com
+CN   ——   *.servenobid.com
+inserimento %.servenobid.com
+55 CN   ——   *.rubiconproject.com
+inserimento %.rubiconproject.com
+CN   ——   aax-eu.amazon-adsystem.com
+60 inserimento aax-eu.amazon-adsystem.com
+CN   ——   *.sharethrough.com
+inserimento %.sharethrough.com
+CN   ——   *.sharethrough.com
+fai update %.sharethrough.com 2
+CN   ——   *.rubiconproject.com
+fai update %.rubiconproject.com 2
+61 CN   ——   *.3lift.com
+inserimento %.3lift.com
+62 CN   ——   *.mantisadnetwork.com
+inserimento %.mantisadnetwork.com
+CN   ——   track.adform.net
+inserimento track.adform.net
+66 CN   ——   track.adform.net
+fai update track.adform.net 2
+CN   ——   *.pubmatic.com
+ATTACCOOOOOOOOOOOOOOOOOOOO
+CN   ——   *.pubmatic.com
+ATTACCOOOOOOOOOOOOOOOOOOOO
+CN   ——   *.adsrvr.org
+inserimento %.adsrvr.org
+CN   ——   *.adnxs.com
+fai update %.adnxs.com 4
+78 CN   ——   *.gumgum.com
+inserimento %.gumgum.com
+CN   ——   *.rubiconproject.com
+fai update %.rubiconproject.com 3
+CN   ——   *.rfihub.com
+inserimento %.rfihub.com
+CN   ——   *.bidswitch.net
+inserimento %.bidswitch.net
+CN   ——   *.admanmedia.com
+inserimento %.admanmedia.com
+CN   ——   *.yieldlift.com
+inserimento %.yieldlift.com
+CN   ——   *.1rx.io
+inserimento %.1rx.io
+CN   ——   *.postrelease.com
+inserimento %.postrelease.com
+CN   ——   pixel.advertising.com
+inserimento pixel.advertising.com
+CN   ——   *.rubiconproject.com
+fai update %.rubiconproject.com 4
+CN   ——   track.adform.net
+fai update track.adform.net 3
+CN   ——   *.everesttech.net
+inserimento %.everesttech.net
+92 CN   ——   sync.adotmob.com
+inserimento sync.adotmob.com
+CN   ——   *.emxdgt.com
+inserimento %.emxdgt.com
+CN   ——   *.mathtag.com
+inserimento %.mathtag.com
+CN   ——   track.adform.net
+fai update track.adform.net 4
+CN   ——   *.gumgum.com
+fai update %.gumgum.com 2
+CN   ——   *.ybp.yahoo.com
+inserimento %.ybp.yahoo.com
+CN   ——   *.360yield.com
+inserimento %.360yield.com
+CN   ——   *.33across.com
+inserimento %.33across.com
+CN   ——   *.zemanta.com
+inserimento %.zemanta.com
+CN   ——   *.outbrain.com
+inserimento %.outbrain.com
+96 CN   ——   *.ipredictive.com
+inserimento %.ipredictive.com
+CN   ——   *.technoratimedia.com
+inserimento %.technoratimedia.com
+CN   ——   *.srv.stackadapt.com
+inserimento %.srv.stackadapt.com
+CN   ——   *.socdm.com
+inserimento %.socdm.com
+CN   ——   *.socdm.com
+fai update %.socdm.com 2
+CN   ——   public.servenobid.com
+ATTACCOOOOOOOOOOOOOOOOOOOO
+97 CN   ——   cdn.adnxs.com
+ATTACCOOOOOOOOOOOOOOOOOOOO
+98 CN   ——   *.3lift.com
+fai update %.3lift.com 2
+102 CN   ——   *.outbrain.com
+fai update %.outbrain.com 2
+CN   ——   san.casalemedia.com
+fai update san.casalemedia.com 2
+CN   ——   san.casalemedia.com
+fai update san.casalemedia.com 3
+CN   ——   san.casalemedia.com
+fai update san.casalemedia.com 4
+103 CN   ——   *.quantserve.com
+inserimento %.quantserve.com
+104 CN   ——   *.vortex.data.microsoft.com
+fai update %.vortex.data.microsoft.com 17
+105 CN   ——   *.cryptocompare.com
+fai update %.cryptocompare.com 7
+105

@@ -1,0 +1,1 @@
+SELECT CA,frequenza from certificati
