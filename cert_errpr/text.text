@@ -1,0 +1,207 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx }
+\title{Tesina SSI indice non definitivo}
+\date{}
+\begin{document}
+
+\maketitle
+
+\section{Introduzione}
+HTTPS (tramite SSL / TLS) utilizza la crittografia a chiave pubblica per proteggere le comunicazioni del browser dalla lettura o dalla modifica durante il transito su Internet. I server forniscono ai browser in visita una chiave pubblica che viene utilizzata per stabilire una connessione crittografata per tutti i successivi scambi di dati.
+
+Tuttavia, la sola ricezione di una chiave pubblica funzionante da sola non garantisce che essa (e per estensione il server) sia effettivamente di proprietà del soggetto remoto corretto (ovvero persona, azienda o organizzazione). Gli aggressori man-in-the-middle \cite{Maninthe68:online} possono manipolare le reti per servire le proprie chiavi, compromettendo così qualsiasi comunicazione.
+
+I browser lo impediscono autenticando i server HTTPS utilizzando i certificati, che sono documenti digitali che legano una chiave pubblica a un singolo soggetto. Il vincolo viene affermato facendo in modo che un'autorità di certificazione (CA) fidata come Amazon.com verifichi l'identità dei potenziali proprietari di certificati, tramite controlli automatici e manuali su database qualificati.
+
+Questa relazione di fiducia significa che la sicurezza degli utenti web non è assoluta; piuttosto, richiede agli utenti di fidarsi dei browser e delle CA per proteggere la propria sicurezza. 
+
+Si noti che il processo di convalida del certificato (descritto in dettaglio nel documento standard RFC 5280) \cite{prova} è piuttosto complicato. Nel prossimo paragrafo vedremo i punti principali.
+
+
+\section{Protocollo SSL e ruolo dei certificati}
+
+
+\subsection{SSL Handshake}
+
+Dopo il three-way handshake, Se tutto è andato bene abbiamo stabilito una connessione tra Client e Server. Abbiamo una connessione, ma non siamo sicuri in termini di dati, questo significa che attualmente comunichiamo in chiaro.
+Ora il client inizierà con un messaggio CLIENT HELLO al server con l'IP e il numero di porta ottenuti durante l'handshake TCP. Quando il Server riceve questo messaggio, sono noti i seguenti dati:
+
+\begin{itemize}
+    \item SSL/TLS Protocol Version
+\item Session ID
+\item Lista delle Cipher Suites
+\item Lista delle CLIENT HELLO Extensions.
+
+
+\end{itemize}
+Il server ora verificherà se supporterà la versione del protocollo e le suite di cifratura fornite.
+Il server risponderà quindi con un messaggio SERVER HELLO:
+
+\begin{itemize}
+    \item SSL/TLS Protocol version.
+\item Cipher Suites dalla  lista di quelle delClient.
+\item Certificate of the server
+
+\item lista delle SERVER HELLO Extensions.
+\end{itemize}
+\begin{figure}
+    
+    \includegraphics[width=17cm,keepaspectratio]{ssl.png}
+    \caption{ssl Handshake}
+    \label{fig:ssl}
+    
+\end{figure}
+
+
+Quando il client riceve il SERVER HELLO, eseguirà SERVER AUTHENTICATION. facendo una serie di controlli sul certificato che vengono approfonditi nei paragrafi successivi
+
+Dopo che il server è stato autenticato, il client continuerà con i seguenti passaggi:
+
+\begin{itemize}
+    \item Il client crea la pre-master  key per la sessione e la crittografa con la chiave pubblica del server (ricevuta in precedenza) e invia la pre-master key crittografata al server.
+    
+    \item Se il server aveva richiesto l'autenticazione del client (opzionale), il server tenterà di autenticare il client. Se il client non può essere autenticato, la sessione termina. Se il client viene autenticato con successo, il server utilizza la sua chiave privata per decrittare la  pre-master key e quindi esegue una serie di passaggi (il client farà lo stesso, a partire dalla stessa pre-master  key) per generare la master key.
+    
+    
+    \item Il client e il server utilizzano la master key per generare le chiavi di sessione, che sono chiavi simmetriche utilizzate per crittografare e decrittografare le informazioni scambiate durante la sessione SSL e per verificarne l'integrità.
+\end{itemize}
+
+
+
+
+
+\subsection{formato dei certificati: X.509}
+I certificati sono file digitali a tutti gli effetti, il che significa che devono seguire un formato di file per memorizzare le informazioni (ad esempio firme, chiavi, emittenti, ecc.). Sebbene le configurazioni PKI private possano implementare qualsiasi formato per i loro certificati, le PKI pubblicamente attendibili (ovvero quelle considerate attendibili dai browser) devono essere conformi a RFC 5280, che richiede l'uso del formato X.509 v3.
+X.509 v3 consente ai certificati di includere dati aggiuntivi, come vincoli di utilizzo e altre estensioni, ciascuna estensione può essere critica o non critica. I browser possono ignorare le estensioni non critiche, non valide o non riconosciute, ma elaborare e fidarsi del certificato sono necessarie tutte quelle critiche.
+
+\subsection{Le CA}
+Le CA utilizzano una chiave privata per firmare crittograficamente tutti i certificati emessi. Tali firme possono dimostrare irrevocabilmente che un certificato è stato emesso da una CA specifica e che non è stato modificato dopo la firma.
+
+Le CA stabiliscono la proprietà della loro chiave di firma tenendo un certificato auto-rilasciato (chiamato root) per la chiave pubblica corrispondente.
+
+Le CA devono osservare procedure strettamente controllate e verificate per creare, gestire e utilizzare il certificato root quindi, per ridurre al minimo l'esposizione, normalmente utilizzano una root per emettere certificati intermedi.
+
+Questi intermedi possono quindi essere utilizzati per emettere i certificati dei propri clienti.
+I browser vengono forniti con un elenco integrato di root attendibili.
+
+\subsection{Verifica del certificato e della catena}
+
+
+Per verificare un certificato, un browser otterrà una sequenza di certificati, ognuno dei quali ha firmato il certificato successivo nella sequenza, collegando il certificato root della CA firmataria a quella del server certificato.
+
+Spesso i browser devono considerare più percorsi di certificazione fino a quando non riescono a trovarne uno valido per un determinato certificato. Anche se un percorso può contenere certificati che "concatenano" insieme correttamente a un certificato root di una CA riconosciuta, il percorso stesso può essere rifiutato a causa di restrizioni sulla lunghezza del percorso, nome di dominio, utilizzo del certificato o policy.
+
+La costruzione e la valutazione di tutti i percorsi possibili è un processo costoso eseguito per ogni nuovo certificato che un browser incontra. I browser hanno implementato varie ottimizzazioni per ridurre al minimo il numero di percorsi candidati rifiutati,
+\subsubsection{convalida del path}
+Dopo aver creato un percorso di certificazione candidato, i browser lo convalidano utilizzando le informazioni contenute nei certificati. Un percorso è valido se i browser possono dimostrare crittograficamente che, a partire da un certificato firmato direttamente dalla root, la chiave privata corrispondente di ogni certificato è stata utilizzata per emettere la successiva nel percorso, fino al certificato foglia.
+I browser ripetono tutti i certificati nel percorso iniziando con il root (cioè il certificato root), convalidando le informazioni di base di ogni certificato e le estensioni critiche.
+
+Se la procedura si conclude con l'ultimo certificato nel percorso senza errori, il percorso viene accettato come valido. Se vengono generati errori, il percorso viene contrassegnato come non valido.
+
+
+\subsubsection{Convalida Certificato}
+Indipendentemente dai campi aggiuntivi di un certificato, i browser devono sempre verificare le informazioni di base del certificato come la firma e l'emittente. 
+
+\begin{enumerate}
+    \item Il browser verifica l'integrità del certificato
+La firma sul certificato può essere verificata utilizzando la normale crittografia a chiave pubblica. Se la firma non è valida, il certificato viene considerato modificato dopo l'emissione e quindi rifiutato.
+
+\item Il browser verifica il periodo di validità del certificato.
+Il periodo di validità di un certificato è l'intervallo di tempo durante il quale la CA firmataria garantisce che manterrà le informazioni sul suo stato. I browser rifiutano i certificati con un periodo di validità che termina prima o iniziano dopo la data e l'ora del controllo di convalida.
+
+
+
+\item . Il browser controlla lo stato di revoca del certificato.
+Quando viene emesso un certificato, si prevede che sia in uso per l'intero periodo di validità. Ovviamente, varie circostanze possono rendere non valido un certificato prima che scada naturalmente. Tali circostanze potrebbero includere un soggetto che cambia il proprio nome o una sospetta compromissione della propria chiave privata. In casi come questo, una CA deve revocare il certificato corrispondente e gli utenti si affidano anche a una CA per notificare ai browser lo stato di revoca dei certificati.
+\begin{itemize}
+    \item \textbf{Certificate Revocation Lists (CRL)} Le CA rilasciano periodicamente un elenco firmato e timestamp di certificati revocati denominato elenco di revoche di certificati (CRL). I CRL sono distribuiti in archivi disponibili pubblicamente e i browser possono acquisire e consultare l'ultimo CRL della CA durante la convalida di un certificato. Un difetto di questo metodo è che la granularità temporale della revoca limitata al periodo di emissione della CRL.
+    
+    \item \textbf{Online Certificate Status Protocol (OCSP)} Consente a un browser di richiedere lo stato di revoca di un certificato specifico da un server OCSP online (chiamato anche reponder). OCSP è molto più immediato ed evita il problema di latenza degli aggiornamenti del CRL.
+\end{itemize}
+
+\item Il browser verifica l'emittente 
+
+I certificati sono associati a due entità:
+\begin{itemize}
+
+    \item \textbf{L'issuer}, ovvero l'entità che possiede la chiave di firma e
+    \item \textbf{il subject}, che fa riferimento al proprietario della chiave pubblica che il certificato autentica.
+    
+\end{itemize}
+I browser verificano che il campo dell'issuer di un certificato sia lo stesso del campo del subject del certificato precedente nel percorso. Viene anche verificato che la chiave dell'emittente sia la stessa che ha firmato il certificato corrente. (eccetto per la root naturalmente)
+
+\item Il browser controlla i vincoli del nome.
+
+Una CA intermedia di proprietà privata (ma pubblicamente attendibile) con i vincoli di nome appropriati può fornire a un'organizzazione un controllo dettagliato sulla gestione e l'emissione dei certificati. I certificati possono essere limitati a uno specifico dominio o albero di domini per il nome di dominio di un'azienda o di un'organizzazione. I vincoli di nome vengono utilizzati per i certificati CA intermedi acquistati da una CA pubblicamente attendibile per impedire alla CA intermedia di emettere certificati perfettamente validi per domini di terze parti
+
+
+\item Il browser verifica i vincoli base come la lunghezza del percorso
+
+Il formato X.509 v3 consente agli emittenti di definire la lunghezza massima del percorso che un certificato può supportare. Ciò consente di controllare fino a che punto ogni certificato può essere inserito in un percorso di certificazione
+\item Il browser procede alla convalida di tutte le estensioni rimanenti che il certificato corrente segna come critiche. Se un browser raggiunge il certificato foglia di un percorso senza errori, il percorso viene accettato come valido. Se vengono prodotti errori, il percorso viene contrassegnato come non valido e non viene stabilita una connessione sicura.
+\end{enumerate}
+
+
+
+
+
+\section{Descrizione problematica}
+
+\subsection{Assunzioni}
+Ci mettiamo nella situazione in cui una CA  venga compressa e vengano generati certificati "validi " da parte di mal intenzionati, assumiamo inoltre  che questi mal intenzionati abbiano compromesso dei server DNS o più in generale che sono in grado di fare MITM attack \cite{Maninthe68:online} fruttando le vulnerabilità della rete e spacciarsi per qualche sito.
+
+Ricapitolando: \begin{itemize}
+    \item CA compromessa ossia mal intenzionati in grado di firmare certificati a suo nome
+    \item CA allo oscuro della compromissione
+    \item I malintenzionati possono fare attacchi di tipo MITM
+
+
+\end{itemize}
+\subsection{Il problema}
+Se ci mettiamo nelle assunzioni appena fatte è evidente come i mal intenzionati possano generare certificati per qualsiasi nome di dominio vogliano.
+Il nostro browser si fiderà dei certificati malevoli in quanto firmati da una CA a cui il browser da piena fiducia .
+
+Questo porta a rischio i dati (credenziali,dati bancari, etc..) dell'utente che usa il sito compromesso a sua insaputa.
+
+\section{Soluzione proposta}
+\subsection{Descrizione}
+Si vuole costruire un sistema di monitoraggio dei certificati che transitano nella rete del client.
+
+L'idea è di salvarsi i certificati che vengono intercettati insieme ai nomi di dominio associati ad essi,
+in questo modo, qualora si dovesse verificare una situazione di attacco, il certificato malevolo viene intercettato e confrontato con quello originale precedentemente sniffato e salvato su db.
+
+A questo punto possiamo di intraprendere una serie di azioni di cui parleremo più avanti per garantire la sicurezza dell'utente.
+
+\begin{figure}
+    
+    \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{filess.png}
+    \caption{Pipeline}
+    \label{fig:ssl}
+    
+\end{figure}
+\subsection{PipeLine di funzionamento}
+
+\begin{enumerate}
+    \item \textbf{Snif del certicato} per prima cosa viene sniffato il certifiacto nella rete del client.
+    \item \textbf{Nome Certificato non presente nel DB} qualora il nome del certificato (anche quelli alternativi) non sono presenti nel DB viene salvato nel DB insieme al suo hash, la frequenza  e il periodo di validità altrimenti se è già presente vengono fatti ulteriori controlli
+    \item \textbf{Nome Certificato presente nel DB}
+        nel caso in cui l'hash del certificato nel DB corrisponde all'hash di quello appena sniffato viene aggiornata la  frequenza e altri campi statistici nel DB altrimenti si continuano i controlli nel prossimo punto
+    
+    \item \textbf{Controlli sulla scadenza e sulla CA}
+        Nel caso in cui Il certificato nel  è scaduto e ha la stessa CA d
+
+    \end{enumerate}
+
+
+
+
+
+\section{Descrizione tecnica e dell'implementazione}
+
+\section{Analisi controllo browser attraverso plugin}
+
+\section{Conclusioni}
+\bibliographystyle{unsrt}
+\bibliography{bib}
+\end{document}

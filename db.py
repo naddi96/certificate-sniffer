@@ -1,11 +1,11 @@
 import sqlite3
 from datetime import datetime
 from sqlite3 import Error
-
+import json
 
 database="./db/sqlite.db"
 
-def create_connection(database):
+def create_connection():
     """ create a database connection to the SQLite database
         specified by db_file
     :param db_file: database file
@@ -24,7 +24,7 @@ def create_connection(database):
 def get_certificate(name,conn):
     cur = conn.cursor()
     cur.execute("""select 
-    certificati.hash , certificati.frequenza,certificati.id, certificati.data_scadenza,certificati.CA
+    certificati.hash , certificati.frequenza,certificati.id, certificati.data_scadenza, certificati.CA, certificati.certificato
             from nomi_domino join certificati 
             where ? = nomi_domino.nome 
             and nomi_domino.certificato= certificati.id""", (name,))
@@ -55,7 +55,16 @@ def insert_certificate(cert_data,conn):
     conn.commit()
 
 
-def update_certificate(id,freq,conn):
+def update_All_certificate(id,freq,hash,cert,conn):
+    sql = ''' update certificati set frequenza=? , hash=? , certificato=? , data_visione=? where certificati.id=? '''
+    now = datetime.now()
+    timestamp = datetime.timestamp(now)
+    cur = conn.cursor()
+    cur.execute(sql, (freq,hash,cert,timestamp,id))
+    conn.commit()
+
+
+def update_Freq_certificate(id,freq,conn):
     sql = ''' update certificati set frequenza=? , data_visione=? where certificati.id=? '''
     now = datetime.now()
     timestamp = datetime.timestamp(now)
@@ -67,5 +76,6 @@ def update_certificate(id,freq,conn):
 if __name__ == '__main__':
     conn = create_connection()
     with conn:
-        rows=get_certificate("cert_data['name']",conn)  
-        print(rows)
+        rows=get_certificate("%.vortex.data.microsoft.com",conn)  
+        x=json.loads(rows[0][5])
+        print(len(x))
