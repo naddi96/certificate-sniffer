@@ -12,8 +12,6 @@ import db
 from datetime import datetime
 import oscp 
 import crl
-
-
 def process_certificate_data(cert_data):
 
     conn = db.create_connection()
@@ -173,6 +171,8 @@ def process_buffer(dict_buffer):
 
 if __name__ == '__main__':
 # .\Wireshark\tshark.exe -i Ethernet -T ek  -Y tls.handshake.certificate | python main.py
+    db.create_db()
+
     k=0
     try:
         buff = ''
@@ -181,9 +181,9 @@ if __name__ == '__main__':
             if buff.endswith('\n'):
                 dict_buffer=json.loads(buff[:-1])
                 process_buffer(dict_buffer)
-                file = open('raw_input.log', 'a')
-                file.write(buff)
-                file.close()
+                #file = open('raw_input.log', 'a')
+                #file.write(buff)
+                #file.close()
                 buff = ''
                 k = k + 1
     except KeyboardInterrupt:

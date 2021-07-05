@@ -26,9 +26,8 @@ def create_connection(db_file):
     return conn
  
 
-def main():
-    database = r"./sqlite.db"
 
+def create_db(database):
     sql_create_projects_table = """ CREATE TABLE IF NOT EXISTS certificati (
                                         id integer PRIMARY KEY,
                                         hash text UNIQUE NOT NULL,
@@ -60,6 +59,12 @@ def main():
     else:
         print("Error! cannot create the database connection.")
 
+
+
+def main():
+    database = r"./sqlite.db"
+    create_db(database)
+   
 
 if __name__ == '__main__':
     main()

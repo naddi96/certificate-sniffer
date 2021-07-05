@@ -5,6 +5,16 @@ import json
 
 database="./db/sqlite.db"
 
+def create_table(conn, create_table_sql):
+    try:
+        c = conn.cursor()
+        c.execute(create_table_sql)
+    except Error as e:
+        print(e)
+
+
+
+
 def create_connection():
     """ create a database connection to the SQLite database
         specified by db_file
@@ -71,6 +81,43 @@ def update_Freq_certificate(id,freq,conn):
     cur = conn.cursor()
     cur.execute(sql, (freq,timestamp,id))
     conn.commit()
+
+
+
+def create_db():
+    sql_create_projects_table = """ CREATE TABLE IF NOT EXISTS certificati (
+                                        id integer PRIMARY KEY,
+                                        hash text UNIQUE NOT NULL,
+                                        certificato BLOB NOT NULL,
+                                        frequenza INTEGER NOT NULL,
+                                        CA text NOT NULL,
+                                        data_visione integer  NOT NULL,
+                                        data_scadenza integer NOT NULL,
+                                        data_emissione integer NOT NULL
+                                    ); """
+
+    sql_create_tasks_table = """CREATE TABLE IF NOT EXISTS nomi_domino (
+                                    id integer PRIMARY KEY,
+                                    nome text UNIQUE NOT NULL,
+                                    certificato integer NOT NULL,
+                                    FOREIGN KEY (certificato) REFERENCES certificati (id)
+                                );"""
+
+    # create a database connection
+    conn = create_connection()
+    print(conn)
+    # create tables
+    if conn is not None:
+        # create projects table
+        create_table(conn, sql_create_projects_table)
+
+        # create tasks table
+        create_table(conn, sql_create_tasks_table)
+    else:
+        print("Error! cannot create the database connection.")
+
+
+
 
 
 if __name__ == '__main__':

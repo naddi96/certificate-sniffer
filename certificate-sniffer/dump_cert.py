@@ -12,10 +12,10 @@ def dump_cert_to_file(cert,file):
     file.write(certificato)
 
 
-    
+
 nome="smartscreen.microsoft.com.json"
 
-nome="%.msedge.net.json"
+nome="%.cryptocompare.com.json"
 cert=open("./cert_errpr/"+nome,"r")
 json_dic=json.load(cert)
 dump_cert_to_file(json_dic["db"][0],nome+"_db.crt")
