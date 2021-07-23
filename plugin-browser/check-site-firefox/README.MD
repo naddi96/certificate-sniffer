@@ -9,4 +9,4 @@ andare nell'url "about:debugging#/runtime/this-firefox" e cliccare su "Carica co
 
 # bloccare domini con determinato figerprint
 
-seguire le istruzioni su come aggiungere un dominio da bloccare nella cartella "backend-blockerd-pages"
+seguire le istruzioni su come aggiungere un dominio da bloccare nella cartella "backend-blockerd-pages".
